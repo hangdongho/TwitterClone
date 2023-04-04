@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const Schema = mongoose.Schema;
 const UserSchema = new Schema({
     firstName:{
@@ -29,7 +30,7 @@ const UserSchema = new Schema({
     },
     profilePic:{
         type: String,
-        default: "/images/profilePic.png"
+        default: "/images/profilePic.jpg"
     },
 },{timestamps:true});
 

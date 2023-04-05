@@ -4,6 +4,8 @@
     --lightgray: #e6ecf0;
     --spacing: 15px;
     --lightblue:#9BD1F9;
+    --graytext:#657786;
+    --graybuttontext: rgba(0,0,0,0.34);
 }
 *{
     outline: none !important;
@@ -28,6 +30,11 @@ nav a:hover{
     background-color: var(--hoverbutton);
     color: var(--blue);
     border-radius: 50%;
+}
+button{
+    background-color: transparent;
+    border: none;
+    color: var(--graybuttontext);
 }
 nav{
     display: flex;
@@ -97,4 +104,51 @@ nav a{
 }
 #submitPostButton:disabled{
     background-color: var(--lightblue) ;
+}
+.post{
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing);
+    cursor: pointer;
+    border-bottom: 1px solid var(--lightgray);
+    flex-shrink: 0;
+}
+.mainContentContainer{
+    flex: 1;
+    display: flex;
+}
+.postContentContainer{
+    padding-left: var(--spacing);
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+.username,
+.date{
+    color: var(--graytext);
+}
+.displayName{
+    font-weight: bold;
+}
+.postFooter{
+    display: flex;
+    align-items: center;
+}
+.postFooter .postButtonContainer{
+    flex: 1;
+    display: flex;
+}
+.postFooter .postButtonContainer button{
+    padding: 1 10px;
+}
+.header a:hover{
+    text-decoration: underline;
+}
+.header span{
+    padding-right: 5px;
+}
+.postButtonContainer button:hover{
+    background-color: #d4edff;
+    color: var(--blue);
+    border-radius: 50%;
 }

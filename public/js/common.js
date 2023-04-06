@@ -1,10 +1,10 @@
-$("#postTextarea").keyup((event) =>{
+$("#postTextarea, #replyTextarea").keyup((event) =>{
     var textbox = $(event.target);
     var value = textbox.val().trim();
 
-    // console.log(value);
+    var isModal = textbox.parents(".modal").length == 1;
 
-    var submitButton = $("#submitPostButton");
+    var submitButton = isModal ? $("#submitReplyButton") : $("#submitPostButton");
 
     if(submitButton.length == 0) return alert('No submit button found');
 
@@ -29,6 +29,17 @@ $("#submitPostButton").click(() =>{
     })
 })
 
+$("#replyModal").on("show.bs.modal", (event) =>{
+    var button = $(event.relatedTarget);
+    var postId= getPostIdFromElement(button);
+    $.get("/api/posts/" + postId,results => {
+        outputPost(results, $("#originalPostContainer"));
+    })
+})
+$("#replyModal").on("hidden.bs.modal", (event) =>{
+    $("#originalPostContainer").html("");
+})
+
 $(document).on("click", ".likeButton", (event) =>{
     var button = $(event.target);
     var postId= getPostIdFromElement(button);
@@ -36,10 +47,38 @@ $(document).on("click", ".likeButton", (event) =>{
     if(postId === undefined) return;
 
     $.ajax({
-        url: "/api/posts",
+        url: `/api/posts/${postId}/like`,
         type: "PUT",
         success: (postData) =>{
-            console.log(postData);
+            button.find("span").text(postData.likes.length || "")
+            
+            if(postData.likes.includes(userLoggedIn._id)){
+                button.addClass("active");
+            }
+            else{
+                button.removeClass("active");
+            }
+        }
+    })
+})
+$(document).on("click", ".retweetButton", (event) =>{
+    var button = $(event.target);
+    var postId= getPostIdFromElement(button);
+    
+    if(postId === undefined) return;
+
+    $.ajax({
+        url: `/api/posts/${postId}/retweet`,
+        type: "POST",
+        success: (postData) =>{
+            button.find("span").text(postData.retweetUsers.length || "")
+            
+            if(postData.retweetUsers.includes(userLoggedIn._id)){
+                button.addClass("active");
+            }
+            else{
+                button.removeClass("active");
+            }
         }
     })
 })
@@ -51,15 +90,33 @@ function getPostIdFromElement(element){
     return postId;
 }
 function createPostHtml(postData){
+
+    if(postData == null) return alert("post object is null");
+    var isRetweet = postData.retweetData !== undefined;
+    var retweetBy= isRetweet ? postData.postedBy.username : null;
+    postData = isRetweet ? postData.retweetData :postData;
+    //console.log(isRetweet);
+
     var postedBy = postData.postedBy;
     if(postedBy._id === undefined){
         return console.log("User object not populated");
     }
     var displayName = postedBy.firstName +" "+ postedBy.lastName;
     var timestamp=timeDifference(new Date(),new Date(postData.createdAt));
+    var likeButtonActiveClass = postData.likes.includes(userLoggedIn._id) ? "active" :"";
+    var retweetButtonActiveClass = postData.retweetUsers.includes(userLoggedIn._id) ? "active" :"";
 
-
+    var retweetText = '';
+    if(isRetweet){
+        retweetText = `<span>
+                        <i class="fa-sharp fa-solid fa-retweet"></i>
+                        Retweeted by <a href='/profile/${retweetBy}'>@${retweetBy}</a>
+                        </span>`
+    }
     return `<div class='post' data-id='${postData._id}'>
+                <div class='postActionContainer'>
+                    ${retweetText}
+                </div>
                 <div class='mainContentContainer'>
                     <div class='userImageContainer'>
                         <img src='${postedBy.profilePic}'>
@@ -75,19 +132,21 @@ function createPostHtml(postData){
                         </div>
                         <div class='postFooter'>
                             <div class='postButtonContainer'>
-                                <button>
+                                <button data-toggle='modal' data-target='#replyModal'>
                                     <i class="fa-regular fa-comment"></i>
                                 </button>
                             </div>
-                            <div class='postButtonContainer'>
-                                <button>
+                            <div class='postButtonContainer green'>
+                                <button class='retweetButton ${retweetButtonActiveClass}' >
                                     <i class="fa-sharp fa-solid fa-retweet"></i>
+                                    <span>${postData.retweetUsers.length || ""}</span>
                                 </button>
                             </div>
-                            <div class='postButtonContainer'>
-                                <button class='likeButton'>
+                            <div class='postButtonContainer red'>
+                                <button class='likeButton ${likeButtonActiveClass}'>
                                     <i class="fa-regular fa-heart"></i>
-                                </button>
+                                    <span>${postData.likes.length || ""}</span>
+                                    </button>
                             </div>
                         </div>
                     </div>
@@ -127,5 +186,21 @@ function timeDifference(current, previous) {
 
     else {
         return Math.round(elapsed/msPerYear ) + ' years ago';   
+    }
+
+}
+
+function outputPost(result, container){
+    container.html("");
+    if(!Array.isArray(result)){
+        result = [result];
+    }
+    result.forEach(res => {
+        var html = createPostHtml(res)
+        container.append(html);
+    });
+
+    if(result.length == 0){
+        container.append("<span class='noResult'>Nothing to show</span>")
     }
 }

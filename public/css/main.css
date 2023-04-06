@@ -6,6 +6,10 @@
     --lightblue:#9BD1F9;
     --graytext:#657786;
     --graybuttontext: rgba(0,0,0,0.34);
+    --red: #e2225f;
+    --backgroundred: rgba(226,34,94,0.1);
+    --green: #17bf63;
+    --backgroundgreen:rgba(23,191,99,0.1);
 }
 *{
     outline: none !important;
@@ -35,6 +39,10 @@ button{
     background-color: transparent;
     border: none;
     color: var(--graybuttontext);
+}
+button i,
+button span{
+    pointer-events: none;
 }
 nav{
     display: flex;
@@ -75,6 +83,14 @@ nav a{
     padding: var(--spacing);
     border-bottom:10px solid var(--lightgray);
     flex-shrink: 0;
+}
+.modal .postFormContainer{
+    border: none;
+    padding: 0;
+    padding-top: var(--spacing);
+}
+.modal .post{
+    padding: 0 0 var(--spacing) 0;
 }
 .userImageContainer{
     width: 50px;
@@ -151,4 +167,24 @@ nav a{
     background-color: #d4edff;
     color: var(--blue);
     border-radius: 50%;
+}
+.postButtonContainer.red button.active{
+    color: var(--red);
+}
+.postButtonContainer.red button:hover{
+    color: var(--red);
+    background-color: var(--backgroundred);
+}
+.postButtonContainer.green button.active{
+    color: var(--green);
+}
+.postButtonContainer.green button:hover{
+    color: var(--green);
+    background-color: var(--backgroundgreen);
+}
+.postActionContainer{
+    padding-left: 35px;
+    font-size: 13px;
+    color: var(--graytext);
+    margin-bottom: 5px;
 }

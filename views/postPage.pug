@@ -1,7 +1,8 @@
 extends layout/main-layout.pug
 block content
-    +createPostForm(userLoggedIn)
+    script.
+        var postId = '!{postId}'
     .postsContainer
     +createPostModal(userLoggedIn)
 block scripts
-    script(src="/js/home.js") 
+    script(src="/js/postPage.js") 

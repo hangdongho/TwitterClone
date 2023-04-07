@@ -9,14 +9,28 @@ const Post = require('../../schemas/PostSchema');
 app.use(bodyParser.urlencoded({extended: false}));
 
 router.get("/", async (req,res,next) =>{
-    var result = await getPosts({});
+    var searchObject = req.query;
+    if(searchObject.isReply !== undefined){
+        var isReply = searchObject.isReply == "true";
+        searchObject.replyTo = {$exists: isReply};
+        delete searchObject.isReply;
+        console.log(searchObject);
+    }
+    var result = await getPosts(searchObject);
     res.status(200).send(result);
 })
 router.get("/:id", async (req,res,next) =>{
     var postId= req.params.id;
 
-    var result = await getPosts({ _id:postId});
-    result = result[0];
+    var postData = await getPosts({ _id:postId});
+    postData = postData[0];
+    var result = {
+        postData: postData
+    }
+    if(postData.replyTo !== undefined){
+        result.replyTo = postData.replyTo;
+    }
+    result.replies = await getPosts({replyTo: postId});
     res.status(200).send(result);
 })
 router.post("/", async (req,res,next) =>{
@@ -28,6 +42,10 @@ router.post("/", async (req,res,next) =>{
     var postData = {
         content: req.body.content,
         postedBy: req.session.user
+    }
+
+    if(req.body.replyTo){
+        postData.replyTo = req.body.replyTo;
     }
     Post.create(postData)
     .then(async (newPost) =>{
@@ -102,14 +120,24 @@ router.post("/:id/retweet", async (req,res,next) =>{
     })
     res.status(200).send(post)
  })
-
+router.delete("/:id",(req,res,next) =>{
+    Post.findByIdAndDelete(req.params.id)
+    .then(() =>{
+        res.sendStatus(202);
+    })
+    .catch(error => {
+        console.log(error);
+        res.sendStatus(400);
+    })
+})
  async function getPosts(filter){
     var result = await Post.find(filter)
     .populate("postedBy")
     .populate("retweetData")
+    .populate("replyTo")
     .sort({"createdAt":-1})
     .catch(error => console.log(error))
-
+    result = await User.populate(result,{path:"replyTo.postedBy"});
     return await User.populate(result,{path:"retweetData.postedBy"});
 
  }

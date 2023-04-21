@@ -289,4 +289,109 @@ nav a{
     color: var(--blue);
     background-color: var(--backgroundblue);
 }
+.trend_for_you {
+    border-radius: 15px;
+    background: #f5f8fa;
+    margin-bottom: 15px;
+}
+.trend_for_you_block {
+    border-bottom: 1px solid #e6ecf0;
+    padding: 10px 15px;
+
+}
+.trend_for_you_block:last-child {
+    border-bottom: none;
+
+}
+.trend_for_you_block:hover {
+    background: rgba(0,0,0,0.03);
+    cursor: pointer;
+}
+.trend_for_you_heading {
+    font-size: 19px;
+    font-weight: bold;
+    color: #14171a;
+}
+.trend_for_you_meta_information {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--graytext);
+}
+.trend_for_you_trend_name {
+    font-size: 15px;
+    color: #14171a;    
+    font-weight: bold;
+    margin-bottom: 5px;
+    margin-top: 2px;
+}
+.rightsidebar_input {
+    display: flex;
+    align-items: center;
+    background: #f5f8fa;
+    padding: 10px;
+    border-radius: 20px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+  }
+  
+.rightsidebar_input input {
+    border: none;
+    background-color: #f5f8fa;
+}
+  
+.rightsidebar_searchIcon {
+    color: gray;
+}
+.who_to_follow{
+    background: #f5f8fa;
+    border-radius: 15px;
+}
+.who_to_follow_block{
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #e6ecf0;
+}
+.who_to_follow_block:last-child{
+   border-bottom: none;
+}
+.who_to_follow_heading{
+    font-size: 19px;
+    font-weight: bold;
+    color: #14171a;
+}
+.who_to_follow_author_logo{
+    width: 49px;
+    height: 49px;
+    border-radius: 50px;
+    margin-right: 10px;
+
+}
+.who_to_follow_author_name{
+    font-size: 15px;
+    font-weight: bold;
+}
+.who_to_follow_author_slug{
+    color: var(--graytext);
+    font-size: 15px;
+}
+.who_to_follow_content{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.who_to_follow_button{
+    border: 1px solid var(--blue);
+    color: var(--blue);
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 15px;
+    min-width: 67px;
+    height: 30px;
+    text-align: center;
+}
+.who_to_follow_button:hover{
+    background: rgba(29, 161, 242, 0.1);
+   cursor: pointer;
+}
 

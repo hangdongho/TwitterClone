@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 router.get("/", (req,res,next) =>{
     //res.status(200).render("explore");
     var payload = {
-        pageTitle:"View Post",
+        pageTitle:"What's happening",
         userLoggedIn: req.session.user,
         userLoggedInJS: JSON.stringify(req.session.user),
         postId : req.params.id

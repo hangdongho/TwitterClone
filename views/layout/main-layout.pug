@@ -22,7 +22,7 @@ html(lang="en")
                     a(href="/")
                         i.fa-solid.fa-house
                     a(href="/explore")
-                        i.fa-solid.fa-magnifying-glass
+                        i.fa-solid.fa-hashtag
                     a(href="/notifications")
                         i.fa-solid.fa-bell
                     a(href="/messages")
@@ -36,9 +36,44 @@ html(lang="en")
                         h1 #{pageTitle}
                     block content 
                 .d-none.d-md-block.col-2.col-md-2.col-lg-4
-                    //- span third column
-
-        
+                    .layout_rightsidebar
+                        .rightsidebar_input
+                            i.fa-solid.fa-magnifying-glass
+                            input(type='text', placeholder='Search Twitter')
+                        .trend_for_you
+                            .trend_for_you_block
+                                .trend_for_you_heading
+                                    p Trends for you 
+                            .trend_for_you_block
+                                .trend_for_you_heading
+                                    .trend_for_you_meta_information
+                                        | Trending in Vietnam
+                                    .trend_for_you_trend_name
+                                        | #Iphone14
+                                    .trend_for_you_meta_information
+                                        | 377k Tweets
+                            .trend_for_you_block
+                                .trend_for_you_heading
+                                    .trend_for_you_meta_information
+                                        | Trending in Vietnam
+                                    .trend_for_you_trend_name
+                                        | Vietnamese street food
+                                    .trend_for_you_meta_information
+                                        | 36.7k Tweets
+                        .who_to_follow
+                            .who_to_follow_block
+                                .who_to_follow_heading
+                                    | Who to follow
+                            .who_to_follow_block
+                                img.who_to_follow_author_logo(src='/images/profilePic.jpg')
+                                .who_to_follow_content
+                                    div
+                                        .who_to_follow_author_name
+                                            | HangDH
+                                        .who_to_follow_author_slug
+                                            | @hangdh
+                                    .who_to_follow_button
+                                        p Follow
         script(src='https://kit.fontawesome.com/9b0d143f0e.js', crossorigin='anonymous')
         script(src='https://code.jquery.com/jquery-3.6.4.min.js', integrity='sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=', crossorigin='anonymous')
         script(src='https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js', integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1', crossorigin='anonymous')

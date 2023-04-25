@@ -123,6 +123,37 @@ $(document).on("click", ".post", (event) =>{
 
 });
 
+$(document).on("click",".followButton",(event) =>{
+    var button =$(event.target);
+    var UserID = button.data().user;
+    console.log(UserID);
+    $.ajax({
+        url:`api/users/${UserID}/follow`,
+        type:"PUT",
+        success:(data,status,xhr) =>{
+            if(xhr.status === 404){
+                alert("User is not found");
+                return;
+            }
+            var diff =1;
+            if(data.following && data.following.includes(UserID)){
+                button.addClass("following");
+                button.text("Following");
+            }
+            else{
+                button.removeClass("following");
+                button.text("Follow");
+                diff=-1;
+            }
+            var followersLabel = $("#followersValue");
+            if(followersLabel.length !== 0){
+                var followersText = followersLabel.text();
+                followersText = parseInt(followersText);
+                followersLabel.text(followersText +diff);
+            }
+        },
+    });
+});
 function getPostIdFromElement(element){
     var isRoot = element.hasClass("post");
     var rootElement = isRoot ? element : element.closest(".post");

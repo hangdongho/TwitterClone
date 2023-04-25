@@ -32,24 +32,34 @@ router.get("/:username/replies",async (req,res,next) =>{
     payload.selectedTab = "replies";
     res.status(200).render("profilePage",payload);
 })
+router.get("/:username/following" , async (req,res,next)=>{
+    let payload = await getPayLoad(req.params.username,req.session.user);
+    payload.selectedTab = "following";
+    res.status(200).render("followersAndFollowing",payload);
+})
+router.get("/:username/followers" , async (req,res,next)=>{
+    let payload = await getPayLoad(req.params.username,req.session.user);
+    payload.selectedTab = "followers";
+    res.status(200).render("followersAndFollowing",payload);
+})
 async function getPayLoad(username, userLoggedIn){
     var user = await User.findOne({username: username})
-    if(user == null){
-        user = await User.findById(username);
+    //if(user == null){
+        //user = await User.findById(username);
         if(user == null){
             return{
                 pageTitle:"User is not found",
                 userLoggedIn:userLoggedIn,
                 userLoggedInJS: JSON.stringify(userLoggedIn)
-            }
+            };
         }
 
-    }
+    //}
     return {
             pageTitle:user.username,
             userLoggedIn:userLoggedIn,
             userLoggedInJS: JSON.stringify(userLoggedIn),
             profileUser: user
-    }
+    };
 }
 module.exports = router;

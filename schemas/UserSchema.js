@@ -32,6 +32,10 @@ const UserSchema = new Schema({
         type: String,
         default: "/images/profilePic.jpg"
     },
+    description:{
+        type: String,
+        default: "Hello i'm a new user"
+    },
     likes:[{
         type:Schema.Types.ObjectId,
         ref:'Post'

@@ -128,7 +128,7 @@ $(document).on("click",".followButton",(event) =>{
     var UserID = button.data().user;
     console.log(UserID);
     $.ajax({
-        url:`api/users/${UserID}/follow`,
+        url:`/api/users/${UserID}/follow`,
         type:"PUT",
         success:(data,status,xhr) =>{
             if(xhr.status === 404){

@@ -5,7 +5,7 @@ block content
     else 
         script.
             var profileUserId ='!{profileUser._id}';
-            var selectedTab = '{!selectedTab}';
+            var selectedTab = '!{selectedTab}';
         .tabsContainer 
             +createTab("Following",`/profile/${profileUser.username}/following`,selectedTab != "followers") 
             +createTab("Followers",`/profile/${profileUser.username}/followers`,selectedTab == "followers") 

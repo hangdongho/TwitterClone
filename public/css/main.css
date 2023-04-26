@@ -289,6 +289,34 @@ nav a{
     color: var(--blue);
     background-color: var(--backgroundblue);
 }
+.followersContainer a .value{
+    margin-right: 5px;
+}
+.noResult{
+    padding: var(--spacing);
+}
+.resultsContainer{
+    display: flex;
+    flex-direction: column;
+}
+.resultsContainer .user{
+    padding: var(--spacing);
+    display: flex;
+    border-bottom: 1px solid var(--lightgray);
+}
+.user .userDetailsContainer{
+    flex: 1;
+    padding: 0 var(--spacing);
+    display: flex;
+    justify-content: space-between;
+}
+.userDetailsContainer .header{
+    display: flex;
+    flex-direction: column;
+}
+/* .userDetailsContainer .description{
+    color: #000;
+} */
 .trend_for_you {
     border-radius: 15px;
     background: #f5f8fa;

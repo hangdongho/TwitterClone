@@ -1,6 +1,6 @@
 $(document).ready(() =>{
-    //loadFollow();
-    alert("hello");
+    loadFollow();
+    //alert("hello");
 });
 function loadFollow(){
     $.get(`/api/users/${profileUserId}/${selectedTab}`,(results) =>{
@@ -31,15 +31,15 @@ function createUserHtml(userData,showFollowButton){
                         </div>`;
     }
     return `<div class='user'>
-                <div class=''userImageContainer'>
+                <div class='userImageContainer'>
                     <img src='${userData.profilePic}'>
                 </div>
                 <div class='userDetailsContainer'>
                     <div class='header'>
                         <a href='/profile/${userData.username}'>${name}</a>
-                        <span class='username'>@${userData.username}
+                        <span class='username'>@${userData.username}</span>
+                        <span class='description'>${userData.description}</span>
                     </div>
                     ${followButton}
-                </div>
-            </div>`;
+                </div>`;
 }

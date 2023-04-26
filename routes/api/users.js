@@ -18,7 +18,8 @@ router.put("/:userId/follow", async (req,res,next) =>{
     var option =isFollowing ?"$pull" : "$addToSet";
 
     //insert new user following
-    req.session.user = await User.findByIdAndUpdate(req.session.user._id, {[option]:{following : userId}},{new:true}).catch((error) => {
+    req.session.user = await User.findByIdAndUpdate(req.session.user._id, {[option]:{following : userId}},{new:true})
+    .catch((error) => {
         console.log(error)
         res.sendStatus(400);
     
@@ -29,13 +30,13 @@ router.put("/:userId/follow", async (req,res,next) =>{
         console.log(error);
         res.sendStatus(400);
     });
-    res.sendStatus(200).send(req.session.user);
+    res.status(200).send(req.session.user);
 });
 router.get("/:userId/following", async (req,res,next) =>{
     User.findById(req.params.userId)
         .populate("following")
         .then((results) =>{
-            res.sendStatus(200).send(results);
+            res.status(200).send(results);
         })
         .catch((error) =>{
             console.log(error);
@@ -47,7 +48,7 @@ router.get("/:userId/followers", async (req,res,next) =>{
     User.findById(req.params.userId)
         .populate("followers")
         .then((results) =>{
-            res.sendStatus(200).send(results);
+            res.status(200).send(results);
         })
         .catch((error) =>{
             console.log(error);

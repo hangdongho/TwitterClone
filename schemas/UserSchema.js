@@ -32,6 +32,9 @@ const UserSchema = new Schema({
         type: String,
         default: "/images/profilePic.jpg"
     },
+    coverPhoto:{
+        type: String
+    },
     description:{
         type: String,
         default: "Hello i'm a new user"

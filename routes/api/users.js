@@ -4,6 +4,10 @@ const router =express.Router();
 const bodyParser = require("body-parser");
 const User = require('../../schemas/UserSchema');
 const Post = require('../../schemas/PostSchema');
+const multer = require("multer");
+const path =  require("path");
+const fs = require("fs");
+const upload = multer({dest:"uploads/"});
 
 
 app.use(bodyParser.urlencoded({extended: false}));
@@ -54,5 +58,43 @@ router.get("/:userId/followers", async (req,res,next) =>{
             console.log(error);
             res.sendStatus(400);
         });
+})
+
+router.post("/profilePicture", upload.single("croppedImage"), async(req,res,next)=>{
+    if(!req.file){
+        console.log("not get file");
+        return res.sendStatus(400);
+    }
+    var filePath = `/upload/images/${req.file.filename}.jpg`;
+    var tempPath = req.file.path;
+    var targetPath = path.join(__dirname,`../../${filePath}`);
+
+    fs.rename(tempPath, targetPath, async(err)=>{
+        if(err != null){
+            console.log(err);
+            return res.sendStatus(400);
+        }
+        req.session.user = await User.findByIdAndUpdate(req.session.user._id, {profilePic: filePath}, {new:true});
+        req.sendStatus(204);
+    })
+})
+
+router.post("/coverPhoto", upload.single("croppedImage"), async(req,res,next)=>{
+    if(!req.file){
+        console.log("not get file");
+        return res.sendStatus(400);
+    }
+    var filePath = `/upload/images/${req.file.filename}.jpg`;
+    var tempPath = req.file.path;
+    var targetPath = path.join(__dirname,`../../${filePath}`);
+
+    fs.rename(tempPath, targetPath, async(err)=>{
+        if(err != null){
+            console.log(err);
+            return res.sendStatus(400);
+        }
+        req.session.user = await User.findByIdAndUpdate(req.session.user._id, {profilePic: filePath}, {new:true});
+        req.sendStatus(204);
+    })
 })
 module.exports = router;

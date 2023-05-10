@@ -4,7 +4,9 @@ mixin createPostForm(userLoggedIn)
             img(src=userLoggedIn.profilePic, alt="User's profile picture")
         .textareaContainer 
             textarea#postTextarea(placeholder="What's happening?")
-            .buttonsContainer 
+            .buttonsContainer
+                button#mediaPostButton 
+                    i.fa-solid.fa-image
                 button#submitPostButton(disabled="") Tweet
 mixin createReplyModal(userLoggedIn)
     #replyModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='replyModalLabel', aria-hidden='true')

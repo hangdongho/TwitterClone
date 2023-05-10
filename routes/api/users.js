@@ -65,7 +65,7 @@ router.post("/profilePicture", upload.single("croppedImage"), async(req,res,next
         console.log("not get file");
         return res.sendStatus(400);
     }
-    var filePath = `/upload/images/${req.file.filename}.jpg`;
+    var filePath = `/uploads/images/${req.file.filename}.jpg`;
     var tempPath = req.file.path;
     var targetPath = path.join(__dirname,`../../${filePath}`);
 
@@ -75,7 +75,7 @@ router.post("/profilePicture", upload.single("croppedImage"), async(req,res,next
             return res.sendStatus(400);
         }
         req.session.user = await User.findByIdAndUpdate(req.session.user._id, {profilePic: filePath}, {new:true});
-        req.sendStatus(204);
+        res.sendStatus(204);
     })
 })
 
@@ -84,7 +84,7 @@ router.post("/coverPhoto", upload.single("croppedImage"), async(req,res,next)=>{
         console.log("not get file");
         return res.sendStatus(400);
     }
-    var filePath = `/upload/images/${req.file.filename}.jpg`;
+    var filePath = `/uploads/images/${req.file.filename}.jpg`;
     var tempPath = req.file.path;
     var targetPath = path.join(__dirname,`../../${filePath}`);
 
@@ -94,7 +94,7 @@ router.post("/coverPhoto", upload.single("croppedImage"), async(req,res,next)=>{
             return res.sendStatus(400);
         }
         req.session.user = await User.findByIdAndUpdate(req.session.user._id, {profilePic: filePath}, {new:true});
-        req.sendStatus(204);
+        res.sendStatus(204);
     })
 })
 module.exports = router;

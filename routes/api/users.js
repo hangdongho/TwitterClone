@@ -93,7 +93,7 @@ router.post("/coverPhoto", upload.single("croppedImage"), async(req,res,next)=>{
             console.log(err);
             return res.sendStatus(400);
         }
-        req.session.user = await User.findByIdAndUpdate(req.session.user._id, {profilePic: filePath}, {new:true});
+        req.session.user = await User.findByIdAndUpdate(req.session.user._id, {coverPhoto: filePath}, {new:true});
         res.sendStatus(204);
     })
 })

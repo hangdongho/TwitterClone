@@ -374,7 +374,7 @@ nav a{
     margin-bottom: 5px;
     margin-top: 2px;
 }
-.rightsidebar_input {
+.searchBox {
     display: flex;
     align-items: center;
     background: #f5f8fa;
@@ -384,13 +384,9 @@ nav a{
     margin-bottom: 15px;
   }
   
-.rightsidebar_input input {
+.searchBox input {
     border: none;
     background-color: #f5f8fa;
-}
-  
-.rightsidebar_searchIcon {
-    color: gray;
 }
 .who_to_follow{
     background: #f5f8fa;

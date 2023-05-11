@@ -129,7 +129,7 @@ $('#coverPhoto').change(function(){
         reader.readAsDataURL(this.files[0]);
     }
 });
-$("#coverPhotoUploadModal").click(() =>{
+$("#coverPhotoUploadButton").click(() =>{
     var canvas = cropper.getCroppedCanvas();
     if(canvas == null){
         alert("check image");

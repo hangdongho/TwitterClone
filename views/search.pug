@@ -1,0 +1,13 @@
+extends layout/main-layout.pug
+block content
+    script.
+        var selectedTab = '!{selectedTab}'; 
+    .searchBox
+        i.fa-solid.fa-magnifying-glass
+        input(type='text', placeholder='Search Twitter') 
+    .tabsContainer 
+        +createTab("Posts",`/search`,selectedTab != "users") 
+        +createTab("Users",`/search`,selectedTab == "users")
+    .resultsContainer
+block scripts
+    script(src="/js/profile.js") 

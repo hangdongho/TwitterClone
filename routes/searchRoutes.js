@@ -5,16 +5,16 @@ const bodyParser = require("body-parser");
 const User = require('../schemas/UserSchema');
 const bcrypt = require('bcrypt');
 
+
 app.use(bodyParser.urlencoded({extended: false}));
 
 router.get("/", (req,res,next) =>{
     var payload = {
-        pageTitle:"What's happening",
+        pageTitle:"Search Page",
         userLoggedIn: req.session.user,
         userLoggedInJS: JSON.stringify(req.session.user),
-        postId : req.params.id
     }
-    res.status(200).render("explore",payload);
+    res.status(200).render("search",payload);
 })
 
 module.exports = router;

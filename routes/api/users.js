@@ -11,7 +11,26 @@ const upload = multer({dest:"uploads/"});
 
 
 app.use(bodyParser.urlencoded({extended: false}));
+router.get("/", async (req, res, next) => {
+    var searchObj = req.query;
 
+    if(req.query.search !== undefined) {
+        searchObj = {
+            $or: [
+                { firstName: { $regex: req.query.search, $options: "i" }},
+                { lastName: { $regex: req.query.search, $options: "i" }},
+                { username: { $regex: req.query.search, $options: "i" }},
+            ]
+        }
+    }
+
+    await User.find(searchObj)
+    .then(results => res.status(200).send(results))
+    .catch(error => {
+        console.log(error);
+        res.sendStatus(400);
+    })
+});
 router.put("/:userId/follow", async (req,res,next) =>{
     let userId = req.params.userId;
     let user = await User.findById(userId);
@@ -97,4 +116,5 @@ router.post("/coverPhoto", upload.single("croppedImage"), async(req,res,next)=>{
         res.sendStatus(204);
     })
 })
+
 module.exports = router;

@@ -374,7 +374,7 @@ nav a{
     margin-bottom: 5px;
     margin-top: 2px;
 }
-.searchBox {
+.searchBarContainer  {
     display: flex;
     align-items: center;
     background: #f5f8fa;
@@ -384,7 +384,7 @@ nav a{
     margin-bottom: 15px;
   }
   
-.searchBox input {
+.searchBarContainer  input {
     border: none;
     background-color: #f5f8fa;
 }

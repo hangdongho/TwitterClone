@@ -4,7 +4,7 @@ block content
         i.fas.fa-search 
         input#searchBox(type="text",name="search",data-search=selectedTab,placeholder="Search something")
     .tabsContainer 
-        +createTab("Posts",`/search/posts`,selectedTab != "users") 
+        //- +createTab("Posts",`/search/posts`,selectedTab != "users") 
         +createTab("Users",`/search/users`,selectedTab == "users")
     .resultsContainer 
 block scripts 

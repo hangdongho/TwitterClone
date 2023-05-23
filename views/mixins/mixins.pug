@@ -3,7 +3,7 @@ mixin createPostForm(userLoggedIn)
         .userImageContainer 
             img(src=userLoggedIn.profilePic, alt="User's profile picture")
         .textareaContainer 
-            textarea#postTextarea(placeholder="What's happening?")
+            textarea#postTextarea(placeholder="What's happening?",maxlength='280')
             .buttonsContainer
                 //- button#mediaPostButton 
                 //-     i.fa-solid.fa-image

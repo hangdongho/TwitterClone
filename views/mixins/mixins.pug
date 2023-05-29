@@ -85,3 +85,31 @@ mixin createCoverPhotoUploadModal(userLoggedIn)
                 .modal-footer
                     button.btn.btn-secondary(type='button', data-dismiss='modal') Cancel
                     button#coverPhotoUploadButton.btn.btn-primary(type='button') Save 
+
+mixin createPinnnedModal(userLoggedIn)
+    #pinModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='pinModalLabel', aria-hidden='true')
+        .modal-dialog(role='document')
+            .modal-content
+                .modal-header
+                    h5#pinModalLabel.modal-title Do you want to pin this post?
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true') &times;
+                .modal-body
+                    p This post will appear at the top of your profile.
+                .modal-footer
+                    button.btn.btn-secondary(type='button', data-dismiss='modal') Cancel
+                    button#pinButton.btn.btn-primary(type='button') Pin 
+
+mixin createUnpinModal(userLoggedIn)
+    #upinModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='upinModalLabel', aria-hidden='true')
+        .modal-dialog(role='document')
+            .modal-content
+                .modal-header
+                    h5#upinModalLabel.modal-title Do you want to unpin this post?
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true') &times;
+                .modal-body
+                    p This will no longer appear automatically at the top of your profile.
+                .modal-footer
+                    button.btn.btn-secondary(type='button', data-dismiss='modal') Cancel
+                    button#unpinButton.btn.btn-primary(type='button') Uppin

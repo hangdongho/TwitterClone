@@ -1,6 +1,15 @@
 extends layout/main-layout.pug
 block content
+    script.
+        var profileUserId ='!{profileUser._id}';
     .postsContainer
     +createPostModal(userLoggedIn)
+block follow 
+    .who_to_follow
+        .who_to_follow_block
+            .who_to_follow_heading
+                | Who to follow
+        .who_to_follow_block
+            .resultsContainer
 block scripts
     script(src="/js/explore.js") 

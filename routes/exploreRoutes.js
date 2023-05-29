@@ -12,7 +12,8 @@ router.get("/", (req,res,next) =>{
         pageTitle:"What's happening",
         userLoggedIn: req.session.user,
         userLoggedInJS: JSON.stringify(req.session.user),
-        postId : req.params.id
+        postId : req.params.id,
+        profileUser: req.session.user
     }
     res.status(200).render("explore",payload);
 })

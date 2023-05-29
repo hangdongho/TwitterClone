@@ -45,9 +45,12 @@ block content
         .tabsContainer 
             +createTab("Posts",`/profile/${profileUser.username}`,selectedTab != "replies") 
             +createTab("Replies",`/profile/${profileUser.username}/replies`,selectedTab == "replies")
+        .pinnedPostContainer
         .postsContainer
         +createPostModal(userLoggedIn)
         +createImageUploadModal()
         +createCoverPhotoUploadModal()
+        +createPinnnedModal()
+        +createUnpinModal()
 block scripts
     script(src="/js/profile.js") 

@@ -23,7 +23,15 @@ router.get("/", async (req, res, next) => {
             ]
         }
     }
-
+    // if(searchObj.followingOnly !== undefined){
+    //     var followingOnly = searchObj.followingOnly === "true";
+    //     if(followingOnly){
+    //         var objectId = [...req.session.user.following];
+    //         objectId.push(req.session.user._id);
+    //         searchObj.postedBy = {$in:objectId};
+    //     }
+    //     delete searchObj.followingOnly;
+    // }
     await User.find(searchObj)
     .then(results => res.status(200).send(results))
     .catch(error => {

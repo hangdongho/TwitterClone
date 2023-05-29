@@ -3,4 +3,7 @@ $(document).ready(() =>{
         outputPost(results,$(".postsContainer"));
         //alert("hi");
     })
+    $.get(`/api/users`,(results) =>{
+        outputUsers(results,$(".resultsContainer"));
+    });
 })

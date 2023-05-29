@@ -62,12 +62,52 @@ $("#deletePostModal").on("show.bs.modal", (event) =>{
     $("#deletePostButton").data("id",postId);
 
 })
+$("#pinModal").on("show.bs.modal", (event) =>{
+    var button = $(event.relatedTarget);
+    var postId = getPostIdFromElement(button);
+    $("#pinButton").data("id",postId);
+})
+$("#upinModal").on("show.bs.modal", (event) =>{
+    var button = $(event.relatedTarget);
+    var postId = getPostIdFromElement(button);
+    $("#unpinButton").data("id",postId);
+})
 $("#deletePostButton").click((event) => {
     var postId = $(event.target).data("id");
     $.ajax({
         url: `/api/posts/${postId}`,
         type: "DELETE",
         success: () =>{
+            location.reload();
+        }
+    })
+})
+$("#pinButton").click((event) => {
+    var postId = $(event.target).data("id");
+    $.ajax({
+        url: `/api/posts/${postId}`,
+        type: "PUT",
+        data:{pinned: true},
+        success: (data,status, xhr) =>{
+            if(xhr.status != 204){
+                alert("could pin post");
+                return;
+            }
+            location.reload();
+        }
+    })
+})
+$("#unpinButton").click((event) => {
+    var postId = $(event.target).data("id");
+    $.ajax({
+        url: `/api/posts/${postId}`,
+        type: "PUT",
+        data:{pinned: false},
+        success: (data,status, xhr) =>{
+            if(xhr.status != 204){
+                alert("could unpin post");
+                return;
+            }
             location.reload();
         }
     })
@@ -279,9 +319,18 @@ function createPostHtml(postData,largeFont = false){
                         Replying to <a href='/profile/${replyTousername}'>${replyTousername}</a>
                     </div>`;
     }
+    var pinnedText="";
     var buttons ="";
     if(postData.postedBy._id == userLoggedIn._id){
-        buttons = `<button data-id="${postData._id}" data-toggle="modal" data-target="#deletePostModal"><i class="fa-solid fa-xmark"></i></button>`;
+        var pinnedClass ="";
+        var datatarget='#pinModal';
+        if(postData.pinned ===  true){
+            pinnedClass = "active";
+            datatarget ="#upinModal";
+            pinnedText="<i class='fa-solid fa-thumbtack'></i> <span>Pinned post</span>";
+        }
+        buttons = `<button class='pinButton ${pinnedClass}' data-id='${postData._id}' data-toggle="modal" data-target="${datatarget}"><i class="fa-solid fa-thumbtack"></i></button>
+                    <button data-id="${postData._id}" data-toggle="modal" data-target="#deletePostModal"><i class="fa-solid fa-xmark"></i></button>`;
     }
 
     return `<div class='post ${largeFontClass}' data-id='${postData._id}'>

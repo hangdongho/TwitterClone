@@ -1,5 +1,6 @@
 var cropper;
 var timer;
+var selectedUsers=[]; 
 $("#postTextarea, #replyTextarea").keyup((event) =>{
     var textbox = $(event.target);
     var value = textbox.val().trim();
@@ -189,6 +190,40 @@ $("#coverPhotoUploadButton").click(() =>{
     })
 })
 
+$("#userSearchText").keydown((event) =>{
+    clearTimeout(timer);
+    var textbox = $(event.target);
+    var value = textbox.val();
+    
+    if(value == "" && event.keydown ==8 || event.which == 8){
+        //remove user from selection
+        selectedUsers.pop();
+        updateSelectedUsersHtml();
+        $(".resultsContainer").html("");
+        if(selectedUsers.length ==0){
+            $("#createChatButton").prop("disabled",true);
+        }
+        return;
+    }
+    timer=setTimeout(()=>{
+        value= textbox.val().trim();
+        if(value == ""){
+            $(".resultsContainer").html("");
+        }
+        else{
+            searchUsers(value);
+        }
+    },1000)
+})
+
+$("#createChatButton").click(() =>{
+    var data = JSON.stringify(selectedUsers);
+    $.post("/api/chats",{users:data},chat =>{
+        if(!chat || !chat._id) return alert("invalid respone from server");
+        window.location.href=`/messages/${chat._id}`;
+    })
+})
+
 $(document).on("click", ".likeButton", (event) =>{
     var button = $(event.target);
     var postId= getPostIdFromElement(button);
@@ -277,7 +312,7 @@ function getPostIdFromElement(element){
     var isRoot = element.hasClass("post");
     var rootElement = isRoot ? element : element.closest(".post");
     var postId = rootElement.data().id;
-    if(postId === undefined) return alert("Post id undefied");
+    if(postId === undefined) return alert("Post id undefined");
     return postId;
 }
 function createPostHtml(postData,largeFont = false){
@@ -386,11 +421,11 @@ function timeDifference(current, previous) {
     var elapsed = current - previous;
 
     if (elapsed < msPerMinute) {
+        if(elapsed/1000 <30) return "Just now"; 
          return Math.round(elapsed/1000) + ' seconds ago';   
     }
 
     else if (elapsed < msPerHour) {
-        if(elapsed/1000 <30) return "Just now"; 
          return Math.round(elapsed/msPerMinute) + ' minutes ago';   
     }
 
@@ -423,7 +458,7 @@ function outputPost(result, container){
     });
 
     if(result.length == 0){
-        container.append("<span class='noResult'>Nothing to show</span>")
+        container.append("<span class='noResult'>Nothing to show.</span>")
     }
 }
 
@@ -442,6 +477,33 @@ function outputPostWithReply(result, container){
     });
 
 }
+function searchUsers(searchTerm){
+    $.get("/api/users",{search: searchTerm},results => {
+        outputSelectedUsers(results,$(".resultsContainer"));
+    })
+}
+function outputSelectedUsers(results,container){
+    container.html("");
+    results.forEach(result => {
+        if(result._id == userLoggedIn._id || selectedUsers.some(x=>x._id == result._id)){
+            return;
+        }
+        var html = createUserHtml(result,false);
+        var element =$(html);
+        element.click(()=>userSelected(result))
+        container.append(element);
+    });
+    if(results.length ==0){
+        container.append("<span class='noResults'>No result found</span>")
+    }
+}
+function userSelected(user){
+    selectedUsers.push(user);
+    updateSelectedUsersHtml()
+    $("#userSearchText").val("").focus();
+    $(".resultsContainer").html("");
+    $("#createChatButton").prop("disabled",false);
+}
 function outputUsers(results,container){
     container.html("");
     results.forEach((result) =>{
@@ -449,7 +511,40 @@ function outputUsers(results,container){
         container.append(html);
     });
     if(results.length == 0){
-        container.append("<span class='noResults'>Nothing to show</span>")
+        container.append("<span class='noResults'>User not found</span>")
+    }
+}
+function updateSelectedUsersHtml(){
+    var element = [];
+    selectedUsers.forEach(user => {
+        var name = user.firstName+" "+user.lastName;
+        var userElement = $(`<span class='selectedUser'>${name}</span>`);
+        element.push(userElement);
+    })
+    $(".selectedUser").remove();
+    $("#selectedUsers").prepend(element);
+}
+
+function getChatName(chatData){
+    var chatName = chatData.chatName;
+    if(!chatName){
+        var otherChat = getOtherChat(chatData.users);
+        var nameArray = otherChat.map(user => user.firstName+" "+user.lastName);
+        chatName = nameArray.join(", ")
+    }
+    return chatName;
+}
+
+function getOtherChat(users){
+    if(users.length == 1) return users;
+    return users.filter(user => user._id != userLoggedIn._id);
+}
+function messageReceived(newMessage){
+    if($(".chatContainer").length == 0){
+        
+    }
+    else {
+        addChatMessageHtml(newMessage);
     }
 }
 function createUserHtml(userData,showFollowButton){

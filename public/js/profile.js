@@ -18,9 +18,9 @@ function loadReplies(){
     $.get("/api/posts",{postedBy: profileUserId, isReply:true},results => {
         outputPost(results,$(".postsContainer"));
     })
-    $.get("/api/posts",{postedBy: profileUserId, pinned:true},results => {
-        outputPinnedPost(results,$(".pinnedPostContainer"));
-    })
+    // $.get("/api/posts",{postedBy: profileUserId, pinned:true},results => {
+    //     outputPinnedPost(results,$(".pinnedPostContainer"));
+    // })
 }
 function outputPinnedPost(results,container){
     if(results.length == 0){

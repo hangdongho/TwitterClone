@@ -44,6 +44,7 @@ const postsApiRoute = require('./routes/api/posts');
 const usersApiRoute = require('./routes/api/users');
 const chatsApiRoute = require('./routes/api/chats');
 const messageApiRoute = require('./routes/api/messages');
+const notificationApiRoute = require('./routes/api/notifications');
 
 app.use("/login",loginRoute);
 app.use("/register",registerRoute);
@@ -60,6 +61,7 @@ app.use("/api/posts",postsApiRoute);
 app.use("/api/users",usersApiRoute);
 app.use("/api/chats",chatsApiRoute);
 app.use("/api/messages",messageApiRoute);
+app.use("/api/notifications",notificationApiRoute);
 
 app.get("/",middleware.requireLogin, (req,res,next) =>{
 
@@ -81,14 +83,13 @@ io.on("connect",socket => {
     socket.on("join room", room => socket.join(room));
     socket.on("typing", room =>  socket.in(room).emit("typing"));
     socket.on("stop typing", room => socket.in(room).emit("stop typing"));
-
+    socket.on("notification received", room => socket.in(room).emit("stop typing"));
     socket.on("new message", newMessage =>{
         var chat = newMessage.chat;
         if(!chat.users) return console.log("Chat users are not defined");
 
         chat.users.forEach(user => {
             if(user._id ==  newMessage.sender._id) return;
-            console.log(user);
             socket.in(user._id).emit("message received", newMessage);
         })
     })

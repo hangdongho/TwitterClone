@@ -42,6 +42,9 @@ router.get("/", async (req,res,next) =>{
     .populate("latestMessage")
     .sort({updateAt:-1})
     .then(async results =>{
+      if(req.query.unreadOnly !==  undefined && req.query.unreadOnly == "true"){
+        results = results.filter(x => x.latestMessage && !x.latestMessage.readBy.includes(req.session.user._id));
+      }
       results = await User.populate(results,{path:"latestMessage.sender"});
       res.status(200).send(results)
     })
@@ -86,6 +89,16 @@ router.get("/:chatId/messages", async (req,res,next) =>{
        console.log(err);
        res.sendStatus(400);
      })
+})
+router.put("/:chatId/messages/markAsRead", async (req,res,next) =>{
+  Message.updateMany({chat: req.params.chatId},{$addToSet:{readBy: req.session.user._id}})
+  .then(() =>{
+    res.sendStatus(204)
+  })
+  .catch(err =>{
+    console.log(err);
+    res.sendStatus(400);
+  })
 })
 module.exports = router;
 

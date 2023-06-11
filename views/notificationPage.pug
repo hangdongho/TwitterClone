@@ -2,3 +2,8 @@ extends layout/main-layout.pug
 
 block content    
     .resultsContainer
+block headerButton 
+    butotn#markNotificationAsRead
+        i.fa-solid.fa-eyes
+block scripts 
+    script(src="/js/notificationPage.js") 
